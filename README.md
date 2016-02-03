@@ -1,4 +1,4 @@
-# Getting and Cleaning Data Course Prjoject
+# Getting and Cleaning Data Course Project
 As a part of Getting and Cleaning Data Course Project from John Hopkins University via Coursera
 
 Performs the following operations in run_analysis.R
