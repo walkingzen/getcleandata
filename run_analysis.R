@@ -3,13 +3,13 @@
 #Data set description is available at 
 #http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 library(dplyr)
-dowloadFile <- function(){
+dowloadandUnzipFile <- function(
+  file.url = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",
+  dest.file = "Dataset.zip" ){
   #downloading files
-  file.url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-  
   download.file(url =file.url, 
-                destfile = "Dataset.zip" )
-  unzip("Dataset.zip")
+                destfile = dest.file )
+  unzip(dest.file, overwrite = T )
 }
 
 cleaningData <- function() {
@@ -56,11 +56,19 @@ cleaningData <- function() {
                                    function(x) {
                                      activities$activity[
                                        activities$activity.id == x]})
-  
+  return(required.data)
+}
+
+tidyAverageData <- function(data) {
   # Creates independent tidy data set with the average of each variable for each
   # activity and each subject. (Step 5)
-  result  <- required.data %>%
-                    group_by(subject.id,activity) %>%
-                    summarise_each(funs(mean))
-  
+  result  <- data %>%
+    group_by(subject.id,activity) %>%
+    summarise_each(funs(mean))
+  write.table(result , file = "tidydata.txt", row.names = F)
+  result
 }
+
+#calling examples
+#data <- cleaningData()
+#tidy.data <- tidyAverageData(data)
